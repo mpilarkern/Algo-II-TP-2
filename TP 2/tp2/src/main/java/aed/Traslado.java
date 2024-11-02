@@ -17,6 +17,7 @@ public class Traslado {
         this.timestamp = timestamp;
     }
 
+//ver si los comparators van acá o en otro lado
     public class GananciasComparator implements Comparator <Traslado>{
         @Override
         public int compare(Traslado t1, Traslado t2){
