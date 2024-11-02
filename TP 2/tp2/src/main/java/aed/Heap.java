@@ -52,7 +52,7 @@ public class Heap<T> {
     public void sacarMaximo(){
         elems.set(0, elems.get(tamaño - 1)); //fijarse lo del aliasing por el elems.set
         elems.remove(tamaño - 1);
-        this.siftDown(0);
+        this.siftDown(0); //no sé porqué acá me tira error cuando pongo elems.siftDown, asi que lo tuve que cambiar por this.siftDown
         ultimo = elems.get(tamaño-1);
         tamaño --;        
     }
