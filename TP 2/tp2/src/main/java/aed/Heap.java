@@ -16,21 +16,20 @@ public class Heap<T> {
 
     public Heap(Comparator<T> comparator){
         elems = new ArrayList();
-        comparator = comparator;
+        this.comparator = comparator;
         tamaño = 0;
         ultimo = null;
     }
 
     public int agregar(T e){
         elems.add(e);
-        siftUp(elems.indexOf(e));
-        ultimo = elems.get(tamaño-1); //hay que chequear que esto esté bien
+        int indice = siftUp(tamaño); //no hace falta usar indexOf pues el indice inicial de e es tamaño
+        ultimo = elems.get(tamaño); //el ultimo elemento tiene indice "tamaño" pues aun no aumenté el tamaño
         tamaño ++;
-        int indice = elems.indexOf(e); //hay que chequear que se pueda usar la función indexOf
         return indice;
     }
 
-    private void siftUp(int indice) {
+    private int siftUp(int indice) {
         while (indice > 0) {
             int indicePadre = (indice - 1) / 2;
 
@@ -42,7 +41,7 @@ public class Heap<T> {
             elems.set(indice, elems.get(indicePadre));
             elems.set(indicePadre, elementoActual);
             indice = indicePadre;
-        }
+        } return indice;  //cambiamos esto para no usar indexOf pues nos aumenta la complejidad a O(n), siftUp devuelve el indice final del elemento que subí
     } //fijarse que no haya aliasing (por el elems.set) y que funcione para los dos comparators (porque para ganancias g1 > g2 y para tiempos t1 < t2)
 
     public T maximo(){
@@ -84,8 +83,14 @@ public class Heap<T> {
     }
 
     public Heap<T> conjuntoACola(ArrayList s){
-        // Implementar
-        return null;
-    }
-    
-}
+        this.elems = s;
+        this.tamaño = elems.size();
+        int indice = (tamaño - 1)/2; //tomo el indice del padre del ultimo elemento
+        while (indice >= 0){
+            siftDown(indice);
+            indice --;
+        }
+        return this;
+    }    //preguntar si la complejidad está bien
+
+} 
