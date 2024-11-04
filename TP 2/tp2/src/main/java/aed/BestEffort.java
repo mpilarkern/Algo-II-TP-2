@@ -3,7 +3,8 @@ package aed;
 import java.util.ArrayList;
 
 public class BestEffort {
-    //Completar atributos privados
+    private Heap<Traslado> trasladosTiempo;
+    private Heap<Traslado> trasladosGanancia;
 
     public BestEffort(int cantCiudades, Traslado[] traslados){
         // Implementar
