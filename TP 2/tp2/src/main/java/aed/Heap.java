@@ -107,7 +107,7 @@ public class Heap<T> {
         T hijoIzq = elems.get(2*indice + 1);
         T hijoDer = elems.get(2*indice + 2);
         if (comparator.compare(elemento, padre) > 0){
-            siftDown(indice); 
+            siftDown(indice); \\indice.padre, para que?
         }
         if ((hijoIzq != null && comparator.compare(elemento, hijoIzq) < 0) || (hijoDer != null && comparator.compare(elemento, hijoDer) < 0)){
             siftUp(indice);
