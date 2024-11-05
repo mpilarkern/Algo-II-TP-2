@@ -92,5 +92,27 @@ public class Heap<T> {
         }
         return this;
     }    //preguntar si la complejidad está bien
+    
+    public void eliminar(int indice){
+        elems.set(indice, ultimo);
+        elems.set(tamaño-1,null);
+        siftDown(indice);
+        tamaño --;
+        ultimo = elems.get(tamaño-1);
+    }
+
+    public void revisar(int indice){
+        T elemento = elems.get(indice);
+        T padre = elems.get((indice-1)/2);
+        T hijoIzq = elems.get(2*indice + 1);
+        T hijoDer = elems.get(2*indice + 2);
+        if (comparator.compare(elemento, padre) > 0){
+            siftDown(indice); 
+        }
+        if ((hijoIzq != null && comparator.compare(elemento, hijoIzq) < 0) || (hijoDer != null && comparator.compare(elemento, hijoDer) < 0)){
+            siftUp(indice);
+        }
+        ultimo = elems.get(tamaño-1);
+    }
 
 } 
