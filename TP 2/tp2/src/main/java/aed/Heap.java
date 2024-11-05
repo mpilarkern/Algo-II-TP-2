@@ -107,10 +107,10 @@ public class Heap<T> { //cambiamos T por traslado? asi podemos usar traslado.id 
         T hijoIzq = elems.get(2*indice + 1);
         T hijoDer = elems.get(2*indice + 2);
         if (comparator.compare(elemento, padre) > 0){
-            siftDown(indice); \\indice.padre, para que?
+            siftUp(indice);
         }
         if ((hijoIzq != null && comparator.compare(elemento, hijoIzq) < 0) || (hijoDer != null && comparator.compare(elemento, hijoDer) < 0)){
-            siftUp(indice);
+            siftDown(indice);
         }
         ultimo = elems.get(tamaño-1);
     }
