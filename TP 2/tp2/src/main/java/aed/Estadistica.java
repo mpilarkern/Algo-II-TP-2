@@ -83,7 +83,7 @@ public class Estadistica {
     }
 
     private void actualizarSuperavitHeap(){
-        //COMPLETAR (VER HANDLES)
+        //COMPLETAR (VER HANDLES) //en este caso, el handle es el ID de la ciudad, entonces al elem con handle id origen le sumo el costo del traslado, y al del id destino se lo resto, luego se reordena el heap
     }
 
     public double gananciaPromedioPorTraslado(){
