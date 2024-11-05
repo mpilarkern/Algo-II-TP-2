@@ -8,7 +8,7 @@ import java.util.Comparator;
 //hijo_der(i) = 2*i + 2
 //padre(i) = (i-1) / 2
 
-public class Heap<T> {
+public class Heap<T> { //cambiamos T por traslado? asi podemos usar traslado.id para el handle
     private ArrayList<T> elems;
     private Comparator<T> comparator;
     private T ultimo;
@@ -26,7 +26,7 @@ public class Heap<T> {
         int indice = siftUp(tamaño); //no hace falta usar indexOf pues el indice inicial de e es tamaño
         ultimo = elems.get(tamaño); //el ultimo elemento tiene indice "tamaño" pues aun no aumenté el tamaño
         tamaño ++;
-        return indice;
+        return indice; //aca habria que devolver el handle, que es el id del traslado
     }
 
     private int siftUp(int indice) {
