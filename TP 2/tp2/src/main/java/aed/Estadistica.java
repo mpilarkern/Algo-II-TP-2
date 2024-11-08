@@ -11,6 +11,7 @@ public class Estadistica {
     private InfoCiudad[] infoCiudades;
     private int cantDespachados;
     private Heap<InfoCiudad> mayorSuperavit;
+    private Integer[] indicesMayorSuperavit;
     private ArrayList<Integer> ciudadesConMayorGanancia;
     private int gananciaMaxima;
     private ArrayList<Integer> ciudadesConMayorPerdida;
@@ -25,6 +26,7 @@ public class Estadistica {
         infoCiudades = new InfoCiudad[cantCiudades];
         cantDespachados = 0;
         mayorSuperavit = new Heap(superavitComparator);
+        indicesMayorSuperavit = new Integer[cantCiudades];
         ciudadesConMayorGanancia = new ArrayList<Integer>();
         gananciaMaxima = 0;
         ciudadesConMayorPerdida = new ArrayList<Integer>();
@@ -53,7 +55,10 @@ public class Estadistica {
 
         actualizarCiudadesConMayorGanancia(ciudadOrigen);
         actualizarCiudadesConMayorPerdida(ciudadDestino);
-        actualizarSuperavitHeap(); 
+        actualizarSuperavitHeap(ciudadOrigen); 
+        actualizarSuperavitHeap(ciudadDestino); 
+
+        gananciaTotal = gananciaTotal + gananciaNeta;
         
         cantDespachados ++;
     }
@@ -82,8 +87,42 @@ public class Estadistica {
         }
     }
 
-    private void actualizarSuperavitHeap(){
-        //COMPLETAR (VER HANDLES) //en este caso, el handle es el ID de la ciudad, entonces al elem con handle id origen le sumo el costo del traslado, y al del id destino se lo resto, luego se reordena el heap
+    //fijarse heapify si esto no funca
+    private void actualizarSuperavitHeap(int ciudad){
+        if (indicesMayorSuperavit[ciudad] == null){ //Si no hay posición en el heap guardada para esta ciudad significa que no está en el heap aún y hay que agregarla
+            InfoCiudad infoCiudad = infoCiudades[ciudad];
+            int indice = mayorSuperavit.agregar(infoCiudad);
+            indicesMayorSuperavit[ciudad] = indice;
+            int i = mayorSuperavit.tamaño()-1; //falta actualizar las demas posiciones en el heap guardadas en la lista indicesMayorSuperavit para aquellas que hayan cambiado de posicion en el heap
+            while (i > indice){              // i (e indice) refieren a posiciones en el heap (posiciones en el array que es atributo del heap)        
+                int id_ciudad = mayorSuperavit.obtenerElemento(i).id; //ciudad_id es la posición en la lista indicesMayorSuperavit
+                indicesMayorSuperavit[id_ciudad] = i;
+                i = (i-1) / 2;  //como el algoritmo que usa agregar usa siftUp, hago un procedimiento similar pero que solo me devuelva el id de la ciudad en cada posicion del heap modficada
+            }
+
+        }
+        else{
+            int indiceInicial = indicesMayorSuperavit[ciudad];
+            int indiceFinal = mayorSuperavit.revisar(indiceInicial);
+            indicesMayorSuperavit[ciudad] = indiceFinal;
+            if (indiceFinal < indiceInicial){ //el elemento subió pues su superavit incrementó por encima del del padre
+                int i = indiceInicial; 
+                while (i > indiceFinal){                    
+                    int id_ciudad = mayorSuperavit.obtenerElemento(i).id; 
+                    indicesMayorSuperavit[id_ciudad] = i;
+                    i = (i-1) / 2;  
+                }
+            } 
+            else if (indiceInicial < indiceFinal){ //el elemento bajó pues su superavit disminuyó por debajo del de alguno de sus hijos
+                int i = indiceInicial; 
+                while (i > indiceFinal){                    
+                    int id_ciudad = mayorSuperavit.obtenerElemento(i).id; 
+                    indicesMayorSuperavit[id_ciudad] = i;
+                    i = (i-1) / 2;  
+                }
+            } 
+
+        }
     }
 
     public double gananciaPromedioPorTraslado(){
@@ -92,3 +131,29 @@ public class Estadistica {
 
 
 }
+
+
+/*
+ *             else if (indiceInicial < indiceFinal){ //el elemento bajó pues su superavit disminuyó por debajo del de alguno de sus hijos
+                int i = indiceInicial; 
+                int indiceMayorHijo = indiceInicial;    
+
+                while (i < indiceFinal){                
+                    int id_ciudad = mayorSuperavit.obtenerElemento(i).id;
+                    InfoCiudad infoCiudadIzq = mayorSuperavit.obtenerElemento(2*i+1); 
+                    InfoCiudad infoCiudadDer = mayorSuperavit.obtenerElemento(2*i+2);
+                    int id_ciudadIzq = infoCiudadIzq.id; 
+                    int id_ciudadDer = infoCiudadDer.id;
+
+                    if (superavitComparator.compare(infoCiudadIzq, infoCiudadDer) > 0){
+                        id_ciudad = id_ciudadIzq;
+                        indiceMayorHijo = 2*i+1;
+                    } 
+                    else{
+                        id_ciudad = id_ciudadDer;
+                        indiceMayorHijo = 2*i+2;
+                    }
+                    i = indiceMayorHijo;
+                    indicesMayorSuperavit[id_ciudad] = i; //REVISAR BIEN!!!!!
+                }
+ */
