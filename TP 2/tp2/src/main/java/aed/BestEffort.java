@@ -1,16 +1,12 @@
 package aed;
 
 import java.util.ArrayList;
-
-import aed.Traslado.GananciasComparator;
-import aed.Traslado.TimeComparator;
+import java.util.Comparator;
 
 public class BestEffort {
     private Heap<Dupla> trasladosTiempo;
     private Heap<Dupla> trasladosGanancia;
     private Estadistica despachados;
-    private TimeComparator comparadorTiempo;
-    private GananciasComparator comparadorGanancia;
 
 
     private class Dupla {
@@ -25,12 +21,27 @@ public class BestEffort {
         public void CambiarHandle(int h){
             handle = h;
         }
-    
-}
+    }
+
+    public class GananciasComparator implements Comparator <Dupla>{
+        @Override
+        public int compare(Dupla d1, Dupla d2){
+            return Integer.compare(d1.traslado.gananciaNeta, d2.traslado.gananciaNeta);
+        }
+    }
+
+    public class TimeComparator implements Comparator <Dupla>{
+        @Override
+        public int compare(Dupla d1, Dupla d2){
+            return Integer.compare(d1.traslado.timestamp, d2.traslado.timestamp);
+        }
+    }
 
     public BestEffort(int cantCiudades, Traslado[] traslados){
-        trasladosTiempo = new Heap(comparadorTiempo);
-        trasladosGanancia = new Heap(comparadorGanancia);
+        TimeComparator comparadorTiempo = new TimeComparator();
+        GananciasComparator comparadorGanancia = new GananciasComparator();
+        Heap<Dupla> trasladosTiempo = new Heap<Dupla>(comparadorTiempo);
+        Heap<Dupla> trasladosGanancia = new Heap<Dupla>(comparadorGanancia);
         ArrayList<Dupla> listaDuplasTiempo = new ArrayList<Dupla>();
         ArrayList<Dupla> listaDuplasGanancias = new ArrayList<Dupla>();
 
@@ -93,38 +104,80 @@ public class BestEffort {
         int[] lista_ids = new int[n];
 
         for (int i = 0; i < n; i++){
-            Dupla maximo = trasladosGanancia.sacarMaximo();
+            Dupla maximo = trasladosGanancia.maximo();
             int id = maximo.traslado.id;
             int handle = maximo.handle;
             lista_ids[i] = id;
-            trasladosTiempo.eliminar(handle);
 
+            int g = trasladosGanancia.eliminar(0);
+            int t = trasladosTiempo.eliminar(handle);
+            
+            while (g >= 0){            
+                t = trasladosGanancia.obtenerElemento(g).handle; 
+                Dupla duplaTiempo = trasladosTiempo.obtenerElemento(t);
+                duplaTiempo.CambiarHandle(g);
+                g = (g-1) / 2;  
+            }  
+
+            while (t >= handle){            
+                g = trasladosTiempo.obtenerElemento(t).handle; 
+                Dupla duplaGanancia = trasladosGanancia.obtenerElemento(g);
+                duplaGanancia.CambiarHandle(t);
+                t = (t-1) / 2;  
+            }  
+
+            despachados.agregarDespachado(maximo.traslado);
         }
+
         return lista_ids;
     }
 
     public int[] despacharMasAntiguos(int n){
-        // Implementar
-        return null;
+        int[] lista_ids = new int[n];
+
+        for (int i = 0; i < n; i++){
+            Dupla maximo = trasladosTiempo.maximo();
+            int id = maximo.traslado.id;
+            int handle = maximo.handle;
+            lista_ids[i] = id;
+
+            int t = trasladosTiempo.eliminar(0);
+            int g = trasladosGanancia.eliminar(handle);
+
+            while (t >= 0){            
+                g = trasladosTiempo.obtenerElemento(t).handle; 
+                Dupla duplaGanancia = trasladosGanancia.obtenerElemento(g);
+                duplaGanancia.CambiarHandle(t);
+                t = (t-1) / 2;  
+            } 
+            
+            while (g >= handle){            
+                t = trasladosGanancia.obtenerElemento(g).handle; 
+                Dupla duplaTiempo = trasladosTiempo.obtenerElemento(t);
+                duplaTiempo.CambiarHandle(g);
+                g = (g-1) / 2;  
+            }  
+
+            despachados.agregarDespachado(maximo.traslado);
+        }
+
+        return lista_ids;
     }
 
     public int ciudadConMayorSuperavit(){
-        // Implementar
-        return 0;
+        return despachados.ciudadConMayorSuperavit();
     }
 
     public ArrayList<Integer> ciudadesConMayorGanancia(){
-        return null;
+        return despachados.ciudadesConMayorGanancia();
     }
 
     public ArrayList<Integer> ciudadesConMayorPerdida(){
-        // Implementar
-        return null;
+        return despachados.ciudadesConMayorPerdida();
     }
 
     public int gananciaPromedioPorTraslado(){
-        // Implementar
-        return 0;
+        return despachados.gananciaPromedioPorTraslado();
     }
     
 }
