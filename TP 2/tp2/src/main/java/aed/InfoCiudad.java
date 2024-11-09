@@ -14,24 +14,6 @@ public class InfoCiudad {
         this.superavit = ganancia - perdida;
     }
 
-/* Probablemente haya que quitar estas funcioncitas
-    public int id(){
-        return this.id;
-    }
-
-    public int ganancia(){
-        return this.ganancia;
-    }
-
-    public int perdida(){
-        return this.perdida;
-    }
-
-    public int superavit(){
-        return this.superavit;
-    }
-*/
-
     public void agregarGanancia(int nuevaGanancia){
         this.ganancia = ganancia + nuevaGanancia;
         this.superavit = superavit + nuevaGanancia;
@@ -60,15 +42,5 @@ public class InfoCiudad {
         }
     }
 
-    public class SuperavitComparator implements Comparator <InfoCiudad>{
-        @Override
-        public int compare(InfoCiudad c1, InfoCiudad c2){
-            int comparacionSuperavit = Integer.compare(c1.ganancia, c2.ganancia);
-            if (comparacionSuperavit != 0){
-                return comparacionSuperavit;
-            } else{
-                return Integer.compare(c2.id, c1.id);
-            }
-        }
-    }
+
 }
