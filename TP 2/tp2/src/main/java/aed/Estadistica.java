@@ -3,10 +3,6 @@ import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.ArrayList;
 
-import aed.InfoCiudad.GananciasComparator;
-import aed.InfoCiudad.PerdidasComparator;
-import aed.InfoCiudad.SuperavitComparator;
-
 public class Estadistica {
     private InfoCiudad[] infoCiudades;
     private int cantDespachados;
@@ -18,8 +14,18 @@ public class Estadistica {
     private int perdidaMaxima;
     private int gananciaTotal;
     private SuperavitComparator superavitComparator;
-    private GananciasComparator ganaciasComparator; //lo uso?
-    private PerdidasComparator perdidasComparator;// lo uso?
+
+    public class SuperavitComparator implements Comparator <InfoCiudad>{
+        @Override
+        public int compare(InfoCiudad c1, InfoCiudad c2){
+            int comparacionSuperavit = Integer.compare(c1.ganancia, c2.ganancia);
+            if (comparacionSuperavit != 0){
+                return comparacionSuperavit;
+            } else{
+                return Integer.compare(c2.id, c1.id);
+            }
+        }
+    }
 
 
     public Estadistica(int cantCiudades){
@@ -35,6 +41,10 @@ public class Estadistica {
         for (int i = 0; i < cantCiudades; i++){
             infoCiudades[i] = new InfoCiudad(i,0,0);
         }
+    }
+
+    public int ciudadConMayorSuperavit(){
+        return mayorSuperavit.maximo().id;
     }
 
     public ArrayList<Integer> ciudadesConMayorGanancia(){
@@ -125,35 +135,9 @@ public class Estadistica {
         }
     }
 
-    public double gananciaPromedioPorTraslado(){
-        return (double) gananciaTotal/cantDespachados;
+    public int gananciaPromedioPorTraslado(){
+        return gananciaTotal/cantDespachados;
     }
 
 
 }
-
-
-/*
- *             else if (indiceInicial < indiceFinal){ //el elemento bajó pues su superavit disminuyó por debajo del de alguno de sus hijos
-                int i = indiceInicial; 
-                int indiceMayorHijo = indiceInicial;    
-
-                while (i < indiceFinal){                
-                    int id_ciudad = mayorSuperavit.obtenerElemento(i).id;
-                    InfoCiudad infoCiudadIzq = mayorSuperavit.obtenerElemento(2*i+1); 
-                    InfoCiudad infoCiudadDer = mayorSuperavit.obtenerElemento(2*i+2);
-                    int id_ciudadIzq = infoCiudadIzq.id; 
-                    int id_ciudadDer = infoCiudadDer.id;
-
-                    if (superavitComparator.compare(infoCiudadIzq, infoCiudadDer) > 0){
-                        id_ciudad = id_ciudadIzq;
-                        indiceMayorHijo = 2*i+1;
-                    } 
-                    else{
-                        id_ciudad = id_ciudadDer;
-                        indiceMayorHijo = 2*i+2;
-                    }
-                    i = indiceMayorHijo;
-                    indicesMayorSuperavit[id_ciudad] = i; //REVISAR BIEN!!!!!
-                }
- */
