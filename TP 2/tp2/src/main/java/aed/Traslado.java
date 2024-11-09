@@ -16,19 +16,4 @@ public class Traslado {
         this.gananciaNeta = gananciaNeta;
         this.timestamp = timestamp;
     }
-
-//ver si los comparators van acá o en otro lado
-    public class GananciasComparator implements Comparator <Traslado>{
-        @Override
-        public int compare(Traslado t1, Traslado t2){
-            return Integer.compare(t1.gananciaNeta, t2.gananciaNeta);
-        }
-    }
-
-    public class TimeComparator implements Comparator <Traslado>{
-        @Override
-        public int compare(Traslado t1, Traslado t2){
-            return Integer.compare(t1.timestamp, t2.timestamp);
-        }
-    }
 }
