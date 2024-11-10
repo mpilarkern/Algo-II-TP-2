@@ -91,7 +91,7 @@ public class Heap<T> {
         return indice; //agrego return
     }
 
-    public Heap<T> conjuntoAHeap(ArrayList s){
+    public Heap<T> conjuntoAHeap(ArrayList<T> s){
         this.elems = s;
         this.tamaño = elems.size();
         int indice = (tamaño - 1)/2; //tomo el indice del padre del ultimo elemento
@@ -139,6 +139,12 @@ public class Heap<T> {
     public T obtenerHijoIzq(int indice){
         return elems.get((2*indice+1)/2);
     }
+
+    public T obtenerHijoDer(int indice){
+        return elems.get((2*indice+2)/2);
+    }
+
+} 
 
     public T obtenerHijoDer(int indice){
         return elems.get((2*indice+2)/2);
