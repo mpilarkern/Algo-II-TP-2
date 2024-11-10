@@ -40,8 +40,8 @@ public class BestEffort {
     public BestEffort(int cantCiudades, Traslado[] traslados){
         TimeComparator comparadorTiempo = new TimeComparator();
         GananciasComparator comparadorGanancia = new GananciasComparator();
-        Heap<Dupla> trasladosTiempo = new Heap<Dupla>(comparadorTiempo);
-        Heap<Dupla> trasladosGanancia = new Heap<Dupla>(comparadorGanancia);
+        trasladosTiempo = new Heap<>(comparadorTiempo);
+        trasladosGanancia = new Heap<>(comparadorGanancia);
         ArrayList<Dupla> listaDuplasTiempo = new ArrayList<Dupla>();
         ArrayList<Dupla> listaDuplasGanancias = new ArrayList<Dupla>();
 
@@ -54,8 +54,8 @@ public class BestEffort {
             listaDuplasGanancias.add(duplaGanancias);
         }
 
-        trasladosTiempo = trasladosTiempo.conjuntoAHeap(listaDuplasTiempo);
-        trasladosGanancia = trasladosGanancia.conjuntoAHeap((listaDuplasGanancias));
+        trasladosTiempo = new Heap<>(comparadorTiempo).conjuntoAHeap(listaDuplasTiempo);
+        trasladosGanancia = new Heap<>(comparadorGanancia).conjuntoAHeap(listaDuplasGanancias);
 
         for (int j = 0; j < traslados.length; j++){
             Dupla duplaTiempo = trasladosTiempo.obtenerElemento(j);
@@ -110,18 +110,22 @@ public class BestEffort {
             lista_ids[i] = id;
 
             int g = trasladosGanancia.eliminar(0);
-            int t = trasladosTiempo.eliminar(handle);
-            
+
             while (g >= 0){            
-                t = trasladosGanancia.obtenerElemento(g).handle; 
-                Dupla duplaTiempo = trasladosTiempo.obtenerElemento(t);
+                int k = trasladosGanancia.obtenerElemento(g).handle; 
+                Dupla duplaTiempo = trasladosTiempo.obtenerElemento(k);
                 duplaTiempo.CambiarHandle(g);
+                if (g-1<0) {
+                    break;
+                }
                 g = (g-1) / 2;  
             }  
 
+            int t = trasladosTiempo.eliminar(handle);
+
             while (t >= handle){            
-                g = trasladosTiempo.obtenerElemento(t).handle; 
-                Dupla duplaGanancia = trasladosGanancia.obtenerElemento(g);
+                int m = trasladosTiempo.obtenerElemento(t).handle; 
+                Dupla duplaGanancia = trasladosGanancia.obtenerElemento(m);
                 duplaGanancia.CambiarHandle(t);
                 t = (t-1) / 2;  
             }  
@@ -142,18 +146,24 @@ public class BestEffort {
             lista_ids[i] = id;
 
             int t = trasladosTiempo.eliminar(0);
-            int g = trasladosGanancia.eliminar(handle);
+            
 
             while (t >= 0){            
-                g = trasladosTiempo.obtenerElemento(t).handle; 
-                Dupla duplaGanancia = trasladosGanancia.obtenerElemento(g);
+                int k = trasladosTiempo.obtenerElemento(t).handle; 
+                Dupla duplaGanancia = trasladosGanancia.obtenerElemento(k);
                 duplaGanancia.CambiarHandle(t);
+                if (t-1<0) { //cuando llegaba a la raiz entraba en un bucle infinito, asi si me paso salgo del while
+                    break;
+                }
                 t = (t-1) / 2;  
             } 
-            
+
+            int g = trasladosGanancia.eliminar(handle);
+
+
             while (g >= handle){            
-                t = trasladosGanancia.obtenerElemento(g).handle; 
-                Dupla duplaTiempo = trasladosTiempo.obtenerElemento(t);
+                int m = trasladosGanancia.obtenerElemento(g).handle; 
+                Dupla duplaTiempo = trasladosTiempo.obtenerElemento(m);
                 duplaTiempo.CambiarHandle(g);
                 g = (g-1) / 2;  
             }  
