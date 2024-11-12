@@ -72,16 +72,16 @@ public class Heap<T> {
                 int indiceDerecho = 2 * indice + 2; 
                 int mayorIndice = indice; 
     
-                if (indiceIzquierdo != null && indiceIzquierdo < tamaño && comparator.compare(elems.get(indiceIzquierdo), elems.get(mayorIndice)) > 0) {
-                    if (indiceDerecho!= null && comparator.compare(elems.get(indiceIzquierdo),elems.get(indiceDerecho)>0)){
+                if (indiceIzquierdo < tamaño && elems.get(indiceIzquierdo) != null && comparator.compare(elems.get(indiceIzquierdo), elems.get(mayorIndice)) > 0) {
+                    if (elems.get(indiceDerecho) != null && comparator.compare(elems.get(indiceIzquierdo),elems.get(indiceDerecho))>0){
                         mayorIndice = indiceIzquierdo;
                     } else {
                         mayorIndice=indiceDerecho;
-                    } 
-                else if (indiceDerecho!=null && indiceDerecho < tamaño && comparator.compare(elems.get(indiceDerecho), elems.get(mayorIndice)) > 0) {
+                    }
+                } 
+                else if (indiceDerecho < tamaño && elems.get(indiceDerecho)!=null && comparator.compare(elems.get(indiceDerecho), elems.get(mayorIndice)) > 0) {
                     mayorIndice = indiceDerecho;
                      }
-                }
     
                 if (mayorIndice == indice) {
                     break;
