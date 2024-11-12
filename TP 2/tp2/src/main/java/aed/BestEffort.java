@@ -59,7 +59,8 @@ public class BestEffort {
             Dupla duplaTiempo = trasladosTiempo.obtenerElemento(j);
             int posicionEnLista = duplaTiempo.handle;
             Dupla duplaGanancias = listaDuplasGanancias.get(posicionEnLista);
-            duplaGanancias.CambiarHandle(j);
+            duplaGanancias.CambiarHandle(j); //debuggeando vimos que no estan bien asignados los handle, no sabemos si es aca o en registrarTraslados, 
+                                            //se mantuvo como "handle" la posicion en la que nos dieron el traslado en la lista.
         }
 
         for (int k = 0; k < traslados.length; k++){
