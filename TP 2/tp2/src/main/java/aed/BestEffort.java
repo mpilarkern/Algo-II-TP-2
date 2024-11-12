@@ -40,8 +40,6 @@ public class BestEffort {
     public BestEffort(int cantCiudades, Traslado[] traslados){
         TimeComparator comparadorTiempo = new TimeComparator();
         GananciasComparator comparadorGanancia = new GananciasComparator();
-        trasladosTiempo = new Heap<>(comparadorTiempo);
-        trasladosGanancia = new Heap<>(comparadorGanancia);
         ArrayList<Dupla> listaDuplasTiempo = new ArrayList<Dupla>();
         ArrayList<Dupla> listaDuplasGanancias = new ArrayList<Dupla>();
 
@@ -101,6 +99,10 @@ public class BestEffort {
     }
 
     public int[] despacharMasRedituables(int n){
+        if (n >= trasladosGanancia.tamaño()){
+            n = trasladosGanancia.tamaño();
+        }
+
         int[] lista_ids = new int[n];
 
         for (int i = 0; i < n; i++){
@@ -137,6 +139,10 @@ public class BestEffort {
     }
 
     public int[] despacharMasAntiguos(int n){
+        if (n >= trasladosGanancia.tamaño()){
+            n = trasladosGanancia.tamaño();
+        }
+
         int[] lista_ids = new int[n];
 
         for (int i = 0; i < n; i++){

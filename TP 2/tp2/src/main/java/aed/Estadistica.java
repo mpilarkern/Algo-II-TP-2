@@ -31,7 +31,8 @@ public class Estadistica {
     public Estadistica(int cantCiudades){
         infoCiudades = new InfoCiudad[cantCiudades];
         cantDespachados = 0;
-        mayorSuperavit = new Heap(superavitComparator);
+        superavitComparator = new SuperavitComparator();
+        mayorSuperavit = new Heap<>(superavitComparator);
         indicesMayorSuperavit = new Integer[cantCiudades];
         ciudadesConMayorGanancia = new ArrayList<Integer>();
         gananciaMaxima = 0;
@@ -79,9 +80,9 @@ public class Estadistica {
             ciudadesConMayorGanancia.add(ciudad);
         }
         else if (infoCiudad.ganancia > gananciaMaxima){
-            ArrayList<Integer> listaNueva = new ArrayList<Integer>(); //es eficiente en terminos de memoria?? complejidad? podriamos usar clear()?
-            listaNueva.add(ciudad);
-            ciudadesConMayorGanancia = listaNueva;
+            ciudadesConMayorGanancia.clear();
+            ciudadesConMayorGanancia.add(ciudad);
+
         }
     }
 
@@ -91,9 +92,8 @@ public class Estadistica {
             ciudadesConMayorPerdida.add(ciudad);
         }
         else if (infoCiudad.perdida > perdidaMaxima){
-            ArrayList<Integer> listaNueva = new ArrayList<Integer>(); //es eficiente en terminos de memoria?? complejidad?
-            listaNueva.add(ciudad);
-            ciudadesConMayorPerdida = listaNueva;
+            ciudadesConMayorPerdida.clear();          //se puede usar clear()??
+            ciudadesConMayorPerdida.add(ciudad);
         }
     }
 
@@ -115,7 +115,7 @@ public class Estadistica {
             int indiceInicial = indicesMayorSuperavit[ciudad];
             int indiceFinal = mayorSuperavit.revisar(indiceInicial);
             indicesMayorSuperavit[ciudad] = indiceFinal;
-            if (indiceFinal < indiceInicial){ //el elemento subió pues su superavit incrementó por encima del del padre
+            if (indiceFinal <= indiceInicial){ //el elemento subió pues su superavit incrementó por encima del del padre
                 int i = indiceInicial; 
                 while (i > indiceFinal){                    
                     int id_ciudad = mayorSuperavit.obtenerElemento(i).id; 
@@ -125,7 +125,7 @@ public class Estadistica {
             } 
             else if (indiceInicial < indiceFinal){ //el elemento bajó pues su superavit disminuyó por debajo del de alguno de sus hijos
                 int i = indiceInicial; 
-                while (i > indiceFinal){                    
+                while (i >= indiceFinal){                    
                     int id_ciudad = mayorSuperavit.obtenerElemento(i).id; 
                     indicesMayorSuperavit[id_ciudad] = i;
                     i = (i-1) / 2;  

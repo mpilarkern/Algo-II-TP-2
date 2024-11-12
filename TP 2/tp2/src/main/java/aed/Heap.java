@@ -53,13 +53,16 @@ public class Heap<T> {
     }
 
     public T sacarMaximo(){
-        T maximo = elems.get(0);
-        elems.set(0, elems.get(tamaño - 1)); //fijarse lo del aliasing por el elems.set
-        elems.remove(tamaño - 1);
-        this.siftDown(0); 
-        ultimo = elems.get(tamaño-1);
-        tamaño --;
-        return maximo;        
+        T maximo = null;
+        if (tamaño > 0){
+            maximo = elems.get(0);
+            elems.set(0, elems.get(tamaño - 1)); //fijarse lo del aliasing por el elems.set
+            elems.remove(tamaño - 1);
+            this.siftDown(0); 
+            ultimo = elems.get(tamaño-1);
+            tamaño --;
+        }
+        return maximo;    
     }
 
     private int siftDown(int indice) {
@@ -115,21 +118,35 @@ public class Heap<T> {
     public int revisar(int indice){
         int res = indice;
         T elemento = elems.get(indice);
-        T padre = elems.get((indice-1)/2);
-        T hijoIzq = elems.get(2*indice + 1);
-        T hijoDer = elems.get(2*indice + 2);
-        if (comparator.compare(elemento, padre) > 0){
-            res = siftUp(indice); 
+
+        if (indice > 0){
+            T padre = elems.get((indice-1)/2);
+            if (comparator.compare(elemento, padre) > 0){
+                res = siftUp(indice); 
+            }
         }
-        else if ((hijoIzq != null && comparator.compare(elemento, hijoIzq) < 0) || (hijoDer != null && comparator.compare(elemento, hijoDer) < 0)){
-            res = siftDown(indice);
+        else if ((2*indice + 1) < tamaño){
+            T hijoIzq = elems.get(2*indice + 1);
+            if (hijoIzq != null && comparator.compare(elemento, hijoIzq) < 0){
+                res = siftDown(indice);
+            }
+        }
+        else if ((2*indice + 2) < tamaño){
+            T hijoDer = elems.get(2*indice + 2);
+            if (hijoDer != null && comparator.compare(elemento, hijoDer) < 0){
+                res = siftDown(indice);
+            }
         }
         ultimo = elems.get(tamaño-1);
         return res;
     }
 
     public T obtenerElemento(int indice){
-        return elems.get(indice);
+        T res = null;
+        if (indice < tamaño){
+            res = elems.get(indice);
+        }
+        return res;
     }
 
     public T obtenerPadre(int indice){
@@ -137,17 +154,11 @@ public class Heap<T> {
     }
 
     public T obtenerHijoIzq(int indice){
-        return elems.get((2*indice+1)/2);
+        return elems.get(2*indice+1);
     }
 
     public T obtenerHijoDer(int indice){
-        return elems.get((2*indice+2)/2);
-    }
-
-} 
-
-    public T obtenerHijoDer(int indice){
-        return elems.get((2*indice+2)/2);
+        return elems.get(2*indice+2);
     }
 
 } 
