@@ -2,7 +2,6 @@ package aed;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-//probando
 
 //para tener a mano:
 //hijo_izq(i) = 2*i + 1
@@ -57,45 +56,53 @@ public class Heap<T> {
         T maximo = null;
         if (tamaño > 0){
             maximo = elems.get(0);
-            elems.set(0, elems.get(tamaño - 1)); //fijarse lo del aliasing por el elems.set
+            elems.set(0, ultimo); //fijarse lo del aliasing por el elems.set
             elems.remove(tamaño - 1);
-            this.siftDown(0); 
-            ultimo = elems.get(tamaño-1);
             tamaño --;
+        }
+        if (tamaño > 0){
+            siftDown(0); 
+            ultimo = elems.get(tamaño-1);
+        }
+        else{
+            ultimo = null;
         }
         return maximo;    
     }
 
     private int siftDown(int indice) {
-        if (indice < tamaño){
-            while (true) {
-                int indiceIzquierdo = 2 * indice + 1; 
-                int indiceDerecho = 2 * indice + 2; 
-                int mayorIndice = indice; 
+        int indiceIzquierdo, indiceDerecho, mayorIndice;
+        mayorIndice = indice; 
+
+            while (indice < tamaño) {
+                indiceIzquierdo = 2 * indice + 1; 
+                indiceDerecho = 2 * indice + 2; 
     
-                if (indiceIzquierdo < tamaño && elems.get(indiceIzquierdo) != null && comparator.compare(elems.get(indiceIzquierdo), elems.get(mayorIndice)) > 0) {
-                    if (elems.get(indiceDerecho) != null && comparator.compare(elems.get(indiceIzquierdo),elems.get(indiceDerecho))>0){
-                        mayorIndice = indiceIzquierdo;
-                    } else {
-                        mayorIndice=indiceDerecho;
-                    }
-                } 
-                else if (indiceDerecho < tamaño && elems.get(indiceDerecho)!=null && comparator.compare(elems.get(indiceDerecho), elems.get(mayorIndice)) > 0) {
+                // Comparar con el hijo izquierdo
+                if (indiceIzquierdo < tamaño && comparator.compare(elems.get(indiceIzquierdo), elems.get(mayorIndice)) > 0) {
+                    mayorIndice = indiceIzquierdo;
+                }
+
+                // Comparar con el hijo derecho
+                if (indiceDerecho < tamaño && comparator.compare(elems.get(indiceDerecho), elems.get(mayorIndice)) > 0) {
                     mayorIndice = indiceDerecho;
-                     }
-    
+                }
+
+                // Si el mayor es el mismo índice, el elemento está en su lugar correcto
                 if (mayorIndice == indice) {
                     break;
                 }
-    
+
+                // Intercambiar elementos
                 T temp = elems.get(indice);
                 elems.set(indice, elems.get(mayorIndice));
                 elems.set(mayorIndice, temp);
-    
+
+                // Continuar desde la posición del mayor
                 indice = mayorIndice;
-            } 
-        }
-        return indice; //agrego return
+            }
+
+            return indice;
     }
 
     public Heap<T> conjuntoAHeap(ArrayList<T> s){
@@ -108,14 +115,17 @@ public class Heap<T> {
         }
         this.ultimo = elems.get(tamaño-1);
         return this;
-    }    //preguntar si la complejidad está bien
+    }   
 
     public int eliminar(int indice){
-        tamaño --;
-        elems.set(indice, ultimo);
-        elems.set(tamaño,null);
-        int indiceFinal = siftDown(indice);
-        ultimo = elems.get(tamaño-1);
+        int indiceFinal = -1;
+        if (tamaño > 0 && indice < tamaño){
+            tamaño --;
+            elems.set(indice, ultimo);
+            elems.set(tamaño,null);
+            indiceFinal = siftDown(indice);
+            ultimo = elems.get(tamaño-1);
+        }
         return indiceFinal; //devuelve el indice donde queda el que antes era el ultimo elemento en el heap (excepto que eliminies el ultimo)
     }
 
