@@ -106,9 +106,9 @@ public class Heap<T> {
     }
 
     public Heap<T> conjuntoAHeap(ArrayList<T> s){
-        this.elems = s;
+        this.elems = new ArrayList<>(s);
         this.tamaño = elems.size();
-        int indice = (tamaño - 1)/2; //tomo el indice del padre del ultimo elemento
+        int indice = (tamaño - 2)/2; //tomo el indice del padre del ultimo elemento
         while (indice >= 0){
             siftDown(indice);
             indice --;
