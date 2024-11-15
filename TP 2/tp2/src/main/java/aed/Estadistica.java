@@ -82,6 +82,7 @@ public class Estadistica {
         else if (infoCiudad.ganancia > gananciaMaxima){
             ciudadesConMayorGanancia.clear();
             ciudadesConMayorGanancia.add(ciudad);
+            gananciaMaxima = infoCiudad.ganancia;
 
         }
     }
@@ -94,6 +95,7 @@ public class Estadistica {
         else if (infoCiudad.perdida > perdidaMaxima){
             ciudadesConMayorPerdida.clear();          //se puede usar clear()??
             ciudadesConMayorPerdida.add(ciudad);
+            perdidaMaxima = infoCiudad.perdida;
         }
     }
 
