@@ -26,9 +26,18 @@ public class Heap<T> {
     }
 
     public int agregar(T e){
+        for (int i  = 0; i < elems.size(); i++) {
+            if (elems.get(i) == null) {
+                elems.set(i, e);
+                int indice = siftUp(i);
+                ultimo = elems.get(i);
+                tamaño ++;
+                return indice;
+            }
+        }
         elems.add(e);
-        int indice = siftUp(tamaño); //no hace falta usar indexOf pues el indice inicial de e es tamaño
-        ultimo = elems.get(tamaño); //el ultimo elemento tiene indice "tamaño" pues aun no aumenté el tamaño
+        int indice = siftUp(tamaño);
+        ultimo = elems.get(tamaño);
         tamaño ++;
         return indice;
     }
@@ -186,3 +195,4 @@ public class Heap<T> {
     }
 
 } 
+
