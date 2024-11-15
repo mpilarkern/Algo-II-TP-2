@@ -123,7 +123,12 @@ public class Heap<T> {
             tamaño --;
             elems.set(indice, ultimo);
             elems.set(tamaño,null);
-            indiceFinal = siftDown(indice);
+            
+            if (indice == tamaño) {
+                indiceFinal = tamaño - 1;
+            } else {
+                indiceFinal = siftDown(indice);
+            }
             ultimo = elems.get(tamaño-1);
         }
         return indiceFinal; //devuelve el indice donde queda el que antes era el ultimo elemento en el heap (excepto que eliminies el ultimo)
