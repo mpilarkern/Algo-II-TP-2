@@ -26,16 +26,13 @@ public class Heap<T> {
     }
 
     public int agregar(T e){
-        for (int i  = 0; i < elems.size(); i++) {
-            if (elems.get(i) == null) {
-                elems.set(i, e);
-                int indice = siftUp(i);
-                ultimo = elems.get(i);
-                tamaño ++;
-                return indice;
-            }
+        if (elems.size() == tamaño){
+            elems.add(e);
         }
-        elems.add(e);
+        else{
+            elems.set(tamaño,e);
+        }
+        
         int indice = siftUp(tamaño);
         ultimo = elems.get(tamaño);
         tamaño ++;
@@ -144,6 +141,7 @@ public class Heap<T> {
             elems.set(indice, ultimo);
             elems.set(tamaño,null);
             indiceFinal=0;
+            ultimo = null;
         }
         return indiceFinal; //devuelve el indice donde queda el que antes era el ultimo elemento en el heap (excepto que eliminies el ultimo)
     }
