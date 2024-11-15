@@ -3,16 +3,11 @@ package aed;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-//para tener a mano:
-//hijo_izq(i) = 2*i + 1
-//hijo_der(i) = 2*i + 2
-//padre(i) = (i-1) / 2
-
 public class Heap<T> {
     private ArrayList<T> elems;
     private Comparator<T> comparator;
     private T ultimo;
-    private int tamaño; //la ñ nos hará problema?
+    private int tamaño; 
 
     public Heap(Comparator<T> comparator){
         elems = new ArrayList<T>();
@@ -26,33 +21,34 @@ public class Heap<T> {
     }
 
     public int agregar(T e){
-        if (elems.size() == tamaño){
+        if (elems.size() == tamaño){ //si no tengo ningún espacio de memoria vacío (null) en el heap, entonces agrego el elemento al final creando su espacio
             elems.add(e);
         }
-        else{
+        else{                        // caso contrario, ubico el nuevo elemento en el primero espacio "null" de mi heap
             elems.set(tamaño,e);
         }
         
-        int indice = siftUp(tamaño);
-        ultimo = elems.get(tamaño);
-        tamaño ++;
-        return indice;
+        int indice = siftUp(tamaño); //siftUp me devuelve el indice en donde terminó el elemento que agregué al heap luego de acomodarlo
+        ultimo = elems.get(tamaño); // modifico el atributo "último" de mi heap para actualizar correctamente mis datos
+        tamaño ++; // modifico el atributo tamaño de mi heap para actualizar correctamente mis datos
+        return indice; 
     }
 
-    private int siftUp(int indice) {
-        while (indice > 0) {
-            int indicePadre = (indice - 1) / 2;
+    private int siftUp(int indice) { //recibo el indice del elemento que quiero acomodar "hacia arriba" 
+        while (indice > 0) { //me aseguro de que mi elemento tenga un padre
+            int indicePadre = (indice - 1) / 2; 
 
-            if(comparator.compare(elems.get(indice), elems.get(indicePadre)) <= 0) {
+            if(comparator.compare(elems.get(indice), elems.get(indicePadre)) <= 0) { //si el padre de mi elemento tiene mayor prioridad, dejo de subir
                 break;
             }
             
-            T elementoActual = elems.get(indice);
-            elems.set(indice, elems.get(indicePadre));
+            T elementoActual = elems.get(indice); // para evitar aliasing, me guardo el elemento actual
+            elems.set(indice, elems.get(indicePadre)); //"swapeo" el elemento con su padre en estas dos líneas
             elems.set(indicePadre, elementoActual);
-            indice = indicePadre;
-        } return indice;  //cambiamos esto para no usar indexOf pues nos aumenta la complejidad a O(n), siftUp devuelve el indice final del elemento que subí
-    } //fijarse que no haya aliasing (por el elems.set) y que funcione para los dos comparators (porque para ganancias g1 > g2 y para tiempos t1 < t2)
+            indice = indicePadre; //ahora cambio el indice para seguir subiendo a los padres necesarios
+        } 
+        return indice;  // armamos SiftUp para no usar indexOf, pues nos aumenta la complejidad a O(n), siftUp devuelve el indice final del elemento que subí
+    } 
 
     public T maximo(){
         return elems.get(0);
@@ -60,13 +56,13 @@ public class Heap<T> {
 
     public T sacarMaximo(){
         T maximo = null;
-        if (tamaño > 0){
-            maximo = elems.get(0);
-            elems.set(0, ultimo); //fijarse lo del aliasing por el elems.set
-            elems.remove(tamaño - 1);
+        if (tamaño > 0){ //me aseguro de no tener un heap vacío
+            maximo = elems.get(0); 
+            elems.set(0, ultimo); //subo el último elemento de mi heap a la raíz
+            elems.remove(tamaño - 1); // ya que subí el último elemento a la raíz, lo elimino de la última posición (donde originalmente estaba)
             tamaño --;
         }
-        if (tamaño > 0){
+        if (tamaño > 0){ //comparo nuevamente porque ahora al tamaño le resté una unidad
             siftDown(0); 
             ultimo = elems.get(tamaño-1);
         }
