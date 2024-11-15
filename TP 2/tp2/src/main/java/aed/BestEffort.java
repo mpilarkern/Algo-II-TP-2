@@ -26,7 +26,12 @@ public class BestEffort {
     public class GananciasComparator implements Comparator <Dupla>{
         @Override
         public int compare(Dupla d1, Dupla d2){
+            if (Integer.compare(d1.traslado.gananciaNeta, d2.traslado.gananciaNeta) == 0){
+                return Integer.compare(d1.traslado.id, d2.traslado.id);
+            } else{
             return Integer.compare(d1.traslado.gananciaNeta, d2.traslado.gananciaNeta);
+            }
+            
         }
     }
 
@@ -106,6 +111,15 @@ public class BestEffort {
 
         int[] lista_ids = new int[n];
 
+        if (trasladosGanancia.tamaño()==1) {
+            Dupla maximo = trasladosGanancia.maximo();
+            int id = maximo.traslado.id;
+            lista_ids[0]=id;
+            trasladosGanancia.eliminar(0);
+            trasladosTiempo.eliminar(0);
+            despachados.agregarDespachado(maximo.traslado);
+        }
+
         for (int i = 0; i < n; i++){
             Dupla maximo = trasladosGanancia.maximo();
             int id = maximo.traslado.id;
@@ -146,9 +160,17 @@ public class BestEffort {
         if (n >= trasladosGanancia.tamaño()){
             n = trasladosGanancia.tamaño();
         }
-
         int[] lista_ids = new int[n];
 
+        if (trasladosTiempo.tamaño()==1) {
+            Dupla maximo = trasladosTiempo.maximo();
+            int id = maximo.traslado.id;
+            lista_ids[0]=id;
+            trasladosGanancia.eliminar(0);
+            trasladosTiempo.eliminar(0);
+            despachados.agregarDespachado(maximo.traslado);
+        } else {
+        
         for (int i = 0; i < n; i++){
             Dupla maximo = trasladosTiempo.maximo();
             int id = maximo.traslado.id;
@@ -182,6 +204,7 @@ public class BestEffort {
             }  
 
             despachados.agregarDespachado(maximo.traslado);
+        }
         }
 
         return lista_ids;
