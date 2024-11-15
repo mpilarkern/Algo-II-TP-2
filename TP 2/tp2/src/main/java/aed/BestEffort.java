@@ -33,7 +33,7 @@ public class BestEffort {
     public class TimeComparator implements Comparator <Dupla>{
         @Override
         public int compare(Dupla d1, Dupla d2){
-            return Integer.compare(d1.traslado.timestamp, d2.traslado.timestamp);
+            return Integer.compare(d2.traslado.timestamp, d1.traslado.timestamp);
         }
     }
 
@@ -126,10 +126,13 @@ public class BestEffort {
 
             int t = trasladosTiempo.eliminar(handle);
 
-            while (t >= handle){            
+            while (t >= 0){            
                 int m = trasladosTiempo.obtenerElemento(t).handle; 
                 Dupla duplaGanancia = trasladosGanancia.obtenerElemento(m);
                 duplaGanancia.CambiarHandle(t);
+                if (t-1<0) {
+                    break;
+                }
                 t = (t-1) / 2;  
             }  
 
@@ -168,10 +171,13 @@ public class BestEffort {
             int g = trasladosGanancia.eliminar(handle);
 
 
-            while (g >= handle){            
+            while (g >= 0){            
                 int m = trasladosGanancia.obtenerElemento(g).handle; 
                 Dupla duplaTiempo = trasladosTiempo.obtenerElemento(m);
                 duplaTiempo.CambiarHandle(g);
+                if (g-1<0) { //cuando llegaba a la raiz entraba en un bucle infinito, asi si me paso salgo del while
+                    break;
+                }
                 g = (g-1) / 2;  
             }  
 
