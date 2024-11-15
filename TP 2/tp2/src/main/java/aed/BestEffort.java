@@ -82,23 +82,37 @@ public class BestEffort {
 
     public void registrarTraslados(Traslado[] traslados){
         for (int i = 0; i < traslados.length; i++){
-            Dupla dupla = new Dupla(traslados[i],i);
-            int indiceGanancia = trasladosGanancia.agregar(dupla);
-            int indiceTiempo = trasladosTiempo.agregar(dupla);
+            Dupla nuevaDuplaTiempo = new Dupla(traslados[i],i);
+            Dupla nuevaDuplaGanancia = new Dupla(traslados[i],i);
+            int indiceTiempo = trasladosTiempo.agregar(nuevaDuplaTiempo);
+
+            nuevaDuplaGanancia.CambiarHandle(indiceTiempo);
 
             int t = trasladosTiempo.tamaño()-1; 
             while (t > indiceTiempo){            
                 int g = trasladosTiempo.obtenerElemento(t).handle; 
                 Dupla duplaGanancia = trasladosGanancia.obtenerElemento(g);
                 duplaGanancia.CambiarHandle(t);
+
+                if (t-1<0) {
+                    break;
+                }
+
                 t = (t-1) / 2;  
             }  
+
+            int indiceGanancia = trasladosGanancia.agregar(nuevaDuplaGanancia);
+            nuevaDuplaTiempo.CambiarHandle(indiceGanancia);
 
             int g = trasladosGanancia.tamaño()-1; 
             while (g > indiceGanancia){            
                 t = trasladosGanancia.obtenerElemento(g).handle; 
                 Dupla duplaTiempo = trasladosTiempo.obtenerElemento(t);
                 duplaTiempo.CambiarHandle(g);
+
+                if (g-1<0) {
+                    break;
+                }
                 g = (g-1) / 2;  
             }  
         }
@@ -127,27 +141,30 @@ public class BestEffort {
             lista_ids[i] = id;
 
             int g = trasladosGanancia.eliminar(0);
-
-            while (g >= 0){            
-                int k = trasladosGanancia.obtenerElemento(g).handle; 
-                Dupla duplaTiempo = trasladosTiempo.obtenerElemento(k);
-                duplaTiempo.CambiarHandle(g);
-                if (g-1<0) {
-                    break;
+            if (trasladosGanancia.tamaño() > 0){
+                while (g >= 0){            
+                    int k = trasladosGanancia.obtenerElemento(g).handle; 
+                    Dupla duplaTiempo = trasladosTiempo.obtenerElemento(k);
+                    duplaTiempo.CambiarHandle(g);
+                    if (g-1<0) {
+                        break;
+                    }
+                    g = (g-1) / 2;  
                 }
-                g = (g-1) / 2;  
             }  
 
             int t = trasladosTiempo.eliminar(handle);
 
-            while (t >= 0){            
-                int m = trasladosTiempo.obtenerElemento(t).handle; 
-                Dupla duplaGanancia = trasladosGanancia.obtenerElemento(m);
-                duplaGanancia.CambiarHandle(t);
-                if (t-1<0) {
-                    break;
+            if (trasladosTiempo.tamaño() > 0){
+                while (t >= 0){            
+                    int m = trasladosTiempo.obtenerElemento(t).handle; 
+                    Dupla duplaGanancia = trasladosGanancia.obtenerElemento(m);
+                    duplaGanancia.CambiarHandle(t);
+                    if (t-1<0) {
+                        break;
+                    }
+                    t = (t-1) / 2;  
                 }
-                t = (t-1) / 2;  
             }  
 
             despachados.agregarDespachado(maximo.traslado);
