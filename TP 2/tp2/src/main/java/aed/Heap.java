@@ -119,7 +119,7 @@ public class Heap<T> {
 
     public int eliminar(int indice){
         int indiceFinal = -1;
-        if (tamaño > 0 && indice < tamaño){
+        if (tamaño > 1 && indice < tamaño){
             tamaño --;
             elems.set(indice, ultimo);
             elems.set(tamaño,null);
@@ -130,6 +130,11 @@ public class Heap<T> {
                 indiceFinal = siftDown(indice);
             }
             ultimo = elems.get(tamaño-1);
+        } else {
+            tamaño--;
+            elems.set(indice, ultimo);
+            elems.set(tamaño,null);
+            indiceFinal=0;
         }
         return indiceFinal; //devuelve el indice donde queda el que antes era el ultimo elemento en el heap (excepto que eliminies el ultimo)
     }
