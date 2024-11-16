@@ -73,52 +73,57 @@ public class Heap<T> {
         return maximo;    
     }
 
-    private int siftDown(int indice) {
-        int indiceIzquierdo, indiceDerecho, mayorIndice;
+    private int siftDown(int indice) { //recibo el indice del elemento que voy a acomodar hacia abajo
+        int indiceIzquierdo, indiceDerecho, mayorIndice; //incializo mis variables
         mayorIndice = indice; 
 
-            while (indice < tamaño) {
+            while (indice < tamaño) { //la guarda tiene complejidad O(1) y hay log n  iteraciones porque sube de nivel a través de los padres
                 indiceIzquierdo = 2 * indice + 1; 
                 indiceDerecho = 2 * indice + 2; 
     
-                // Comparar con el hijo izquierdo
+                // Comparo con el hijo izquierdo
                 if (indiceIzquierdo < tamaño && comparator.compare(elems.get(indiceIzquierdo), elems.get(mayorIndice)) > 0) {
-                    mayorIndice = indiceIzquierdo;
+                    mayorIndice = indiceIzquierdo; //si el hijo izquierdo es mayor me guardo su indice como el indice de mi mayor elemento
                 }
 
-                // Comparar con el hijo derecho
+                // Comparo con el hijo derecho
                 if (indiceDerecho < tamaño && comparator.compare(elems.get(indiceDerecho), elems.get(mayorIndice)) > 0) {
-                    mayorIndice = indiceDerecho;
+                    mayorIndice = indiceDerecho; //si el hijo derecho es mayor me guardo su indice como el indice de mi mayor elemento
                 }
 
+                //aclaración: no comparamos entre hijo izquierdo y derecho porque las colas de prioridad solo requieren que el padre tenga mayor prioridad que sus hijos
+                
                 // Si el mayor es el mismo índice, el elemento está en su lugar correcto
                 if (mayorIndice == indice) {
                     break;
                 }
+                //todos los if tienen complejidad O(1)
 
-                // Intercambiar elementos
+                // Intercambio los elementos con el mismo proceso de "swap" que use en siftUp
                 T temp = elems.get(indice);
                 elems.set(indice, elems.get(mayorIndice));
                 elems.set(mayorIndice, temp);
+                //tanto get como set tienen complejidad O(1)
 
                 // Continuar desde la posición del mayor
                 indice = mayorIndice;
             }
+            //la complejidad del while es O(1) + (log n)*O(1) = O(log n) donde n es la cantidad de elementos del heap
 
-            return indice;
-    }
+            return indice; //siftDown devuelve el indice final del elemento que baje
+    } //si sumamos las complejidades de las operaciones realizadas en siftDown, podemos concluir que la complejidad de siftDown es O(log n)
 
     public Heap<T> conjuntoAHeap(ArrayList<T> s){
-        this.elems = new ArrayList<>(s);
-        this.tamaño = elems.size();
-        int indice = (tamaño - 2)/2; //tomo el indice del padre del ultimo elemento
-        while (indice >= 0){
-            siftDown(indice);
-            indice --;
-        }
-        this.ultimo = elems.get(tamaño-1);
+        this.elems = new ArrayList<>(s); //copio los elementos del conjunto que me dan como entrada, O(1)
+        this.tamaño = elems.size(); // O(1) *** PREGUNTAR SI SE PUEDE USAR ELEMS.SIZE()
+        int indice = (tamaño - 2)/2; //tomo el indice del padre del ultimo elemento, O(1)
+        while (indice >= 0){ //me aseguro de no irme de rango, este ciclo itera sobre todos los elementos del heap excluyendo sus hojas
+            siftDown(indice); //acomodo cada elemento, tiene complejidad O(log n)
+            indice --; //O(1)
+        } // la complejidad de este while es O(n*log n), 
+        this.ultimo = elems.get(tamaño-1); //O(1)
         return this;
-    }   
+    }   //la complejidad de conjuntoAHeap es O(n*log n), donde n es la cantidad de elementos del heap
 
     public int eliminar(int indice){
         int indiceFinal = -1;
