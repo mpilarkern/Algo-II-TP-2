@@ -43,7 +43,7 @@ public class BestEffort {
     }
 
     public BestEffort(int cantCiudades, Traslado[] traslados){
-        TimeComparator comparadorTiempo = new TimeComparator(); // Inicializamos los atributos de la clase *** ESTOS NO SE SI SON ATRIBUTOS(?
+        TimeComparator comparadorTiempo = new TimeComparator(); // Implementamos el constructor de clase incializando las variables que usaremos para construir los atributos de BestEffort
         GananciasComparator comparadorGanancia = new GananciasComparator();
         ArrayList<Dupla> listaDuplasTiempo = new ArrayList<Dupla>(); //inicializo listas donde haré una copia de los traslados pasados por parámetro
         ArrayList<Dupla> listaDuplasGanancias = new ArrayList<Dupla>();
@@ -61,10 +61,10 @@ public class BestEffort {
         trasladosGanancia = new Heap<>(comparadorGanancia).conjuntoAHeap(listaDuplasGanancias); //La complejidad de conjuntoAHeap es O(n*log n), en este caso: O(|T|*log |T|)
 
         for (int j = 0; j < traslados.length; j++){ //En este for asigno correctamente el handle a los traslados en mi heap de Ganancias
-            Dupla duplaTiempo = trasladosTiempo.obtenerElemento(j); //Obtener elemento tiene complehidad O(1)
+            Dupla duplaTiempo = trasladosTiempo.obtenerElemento(j); //Obtener elemento tiene complejidad O(1)
             int posicionEnLista = duplaTiempo.handle; //El handle que tenia guardado en el heap de Tiempo es la posicion que tiene el elemento en la lista pasada por parámetro
-            Dupla duplaGanancias = listaDuplasGanancias.get(posicionEnLista); // Tomo la dupla que contiene el traslado al que quiero modificar el handle a partir de la copia que hice de la lista pasada por parámetro
-            duplaGanancias.CambiarHandle(j); // j es la posicion de mi traslado en el heap de Tiempo, es decir, el handle de mi traslado en el heap de Ganancia
+            Dupla duplaGanancias = listaDuplasGanancias.get(posicionEnLista); // Tomo la dupla que contiene el traslado al que quiero modificar el handle a partir de la copia que hice de la lista pasada por parámetro, O(1)
+            duplaGanancias.CambiarHandle(j); // j es la posicion de mi traslado en el heap de Tiempo, es decir, el handle de mi traslado en el heap de Ganancia, cambiarHandle tiene complejidad O(1)
         }
 
         for (int k = 0; k < traslados.length; k++){ //En este for asigno correctamente el handle a los traslados en mi heap de Tiempo, misma lógica que el for anterior
@@ -73,11 +73,11 @@ public class BestEffort {
             Dupla duplaTiempo = trasladosTiempo.obtenerElemento(posicionEnHeapTiempo); //En este caso obtengo la dupla que quiero cambiar a partir del heap Tiempo, ya no uso la lista que creé
             duplaTiempo.CambiarHandle(k);
         }
-
-        despachados = new Estadistica(cantCiudades); // inicializo mi atributo de clase
+            //ambos for tienen complejidad O(|T|) ya que itera |T| veces
+        despachados = new Estadistica(cantCiudades); // inicializo mi atributo de clase, O(|C|), donde |C| es cantidad de Ciudades
     
         
-    }
+    } //La complejidad de BestEffort es ***
 
     public void registrarTraslados(Traslado[] traslados){
         for (int i = 0; i < traslados.length; i++){
