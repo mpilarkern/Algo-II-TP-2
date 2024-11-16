@@ -9,12 +9,12 @@ import java.util.ArrayList;
 //Las operaciones elementales, las operaciones sobre arrayList (constructor, add, set, get, clear, size) y
 //los comparadores que creamos son O(1) así que, para facilitar la lectura, no aclararemos esto en cada aparición.
 
-// llamamos C al conjunto de ciudades y n a la cantidad de elementos del heap mayorSupearvit
+// llamamos C al conjunto de ciudades
 
 public class Estadistica {
     private InfoCiudad[] infoCiudades;
     private int cantDespachados;
-    private Heap<InfoCiudad> mayorSuperavit;
+    private Heap<InfoCiudad> mayorSuperavit; // la cantidad de elementos de este heap es |C|, registra el superavit para cada ciudad
     private Integer[] indicesMayorSuperavit; // usamos una lista donde cada posicion refiere al id de una ciudad, el valor en esa posicion es su indice en el heap mayorSuperavit)
     private ArrayList<Integer> ciudadesConMayorGanancia;
     private int gananciaMaxima;
@@ -78,13 +78,13 @@ public class Estadistica {
 
         actualizarCiudadesConMayorGanancia(ciudadOrigen); //O(1)
         actualizarCiudadesConMayorPerdida(ciudadDestino); //O(1)
-        actualizarSuperavitHeap(ciudadOrigen); // O(log n)
-        actualizarSuperavitHeap(ciudadDestino); // O(log n)
+        actualizarSuperavitHeap(ciudadOrigen); // O(log |C|)
+        actualizarSuperavitHeap(ciudadDestino); // O(log |C|)
 
         gananciaTotal = gananciaTotal + gananciaNeta;
         
         cantDespachados ++;
-    } // O(log n)
+    } // O(log |C|)
 
     private void actualizarCiudadesConMayorGanancia(int ciudad){
         InfoCiudad infoCiudad = infoCiudades[ciudad];
@@ -113,17 +113,17 @@ public class Estadistica {
     private void actualizarSuperavitHeap(int ciudad){
         if (indicesMayorSuperavit[ciudad] == null){ // si esta ciudad aún no fue origen ni destino de ningun traslado despachado, significa que no está en el heap aún y hay que agregarla
             InfoCiudad infoCiudad = infoCiudades[ciudad]; //O(1)
-            int indice = mayorSuperavit.agregar(infoCiudad); // O(log n)
+            int indice = mayorSuperavit.agregar(infoCiudad); // O(log |C|)
             indicesMayorSuperavit[ciudad] = indice;
             int i = mayorSuperavit.tamaño()-1; 
             while (i > indice){ // empiezo a iterar desde el ultimo elemento del heap        
                 int id_ciudad = mayorSuperavit.obtenerElemento(i).id; //ciudad_id es la posición en la lista indicesMayorSuperavit, O(1)
                 indicesMayorSuperavit[id_ciudad] = i; // corrijo la referencia a la posicion del heap en la lista
                 i = (i-1) / 2;  // itero subiendo al padre
-        } // el while tiene complejidad O(log n) porque en el peor caso recorro la altura del heap que es log n
+        } // el while tiene complejidad O(log |C|) porque en el peor caso recorro la altura del heap que es log |C|
         else{
             int indiceInicial = indicesMayorSuperavit[ciudad]; // O(1)
-            int indiceFinal = mayorSuperavit.verificarPosicion(indiceInicial); // O(log n)
+            int indiceFinal = mayorSuperavit.verificarPosicion(indiceInicial); // O(log |C|)
             indicesMayorSuperavit[ciudad] = indiceFinal;
             if (indiceFinal <= indiceInicial){ //si el indice final es menor significa que el elemento subió, es decir, su superavit incrementó por encima del padre
                 int i = indiceInicial; 
@@ -131,18 +131,18 @@ public class Estadistica {
                     int id_ciudad = mayorSuperavit.obtenerElemento(i).id; 
                     indicesMayorSuperavit[id_ciudad] = i;
                     i = (i-1) / 2;  
-                } // O(log n)
-            } //O(log n)
+                } // O(log |C|)
+            } //O(log |C|)
             else if (indiceInicial < indiceFinal){//si el indice final es mayor significa que el elemento bajo, es decir, su superavit disminuyo por debajo de alguno de sus hijos
                 int i = indiceInicial; 
                 while (i >= indiceFinal){    // reacomodo                 
                     int id_ciudad = mayorSuperavit.obtenerElemento(i).id; 
                     indicesMayorSuperavit[id_ciudad] = i;
                     i = (i-1) / 2;  
-                } // O(log n)
-            } // O(log n)
-        } // O(log n)
-    } // O(log n)
+                } // O(log |C|)
+            } // O(log |C|)
+        } // O(log |C|)
+    } // O(log |C|)
 
     public int gananciaPromedioPorTraslado(){
         return gananciaTotal/cantDespachados;
