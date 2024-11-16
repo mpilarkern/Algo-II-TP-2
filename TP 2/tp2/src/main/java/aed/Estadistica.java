@@ -3,6 +3,14 @@ import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.ArrayList;
 
+// esta clase guarda la información sobre todo lo que ha sido despachado
+// tiene varios atributos para poder modularizar facilmente y reducir las complejidades
+
+//Las operaciones elementales, las operaciones sobre arrayList (constructor, add, set, get, clear, size) y
+//los comparadores que creamos son O(1) así que, para facilitar la lectura, no aclararemos esto en cada aparición.
+
+// llamamos c a la cantidad de ciudades
+
 public class Estadistica {
     private InfoCiudad[] infoCiudades;
     private int cantDespachados;
@@ -18,34 +26,38 @@ public class Estadistica {
     public class SuperavitComparator implements Comparator <InfoCiudad>{
         @Override
         public int compare(InfoCiudad c1, InfoCiudad c2){
-            int comparacionSuperavit = Integer.compare(c1.ganancia, c2.ganancia);
+            int comparacionSuperavit = Integer.compare(c1.ganancia, c2.ganancia); //O(1)
             if (comparacionSuperavit != 0){
                 return comparacionSuperavit;
             } else{
-                return Integer.compare(c2.id, c1.id);
+                return Integer.compare(c2.id, c1.id);//O(1)
             }
         }
-    }
+    } //O(1)
 
 
     public Estadistica(int cantCiudades){
-        infoCiudades = new InfoCiudad[cantCiudades];
+        infoCiudades = new InfoCiudad[cantCiudades]; //O(c)
         cantDespachados = 0;
-        superavitComparator = new SuperavitComparator();
-        mayorSuperavit = new Heap<>(superavitComparator);
-        indicesMayorSuperavit = new Integer[cantCiudades];
-        ciudadesConMayorGanancia = new ArrayList<Integer>();
+        superavitComparator = new SuperavitComparator(); //O(1)
+        mayorSuperavit = new Heap<>(superavitComparator); //O(1)
+        indicesMayorSuperavit = new Integer[cantCiudades]; //O(c)
+        ciudadesConMayorGanancia = new ArrayList<Integer>(); 
         gananciaMaxima = 0;
         ciudadesConMayorPerdida = new ArrayList<Integer>();
         perdidaMaxima = 0;
         gananciaTotal = 0;
-        for (int i = 0; i < cantCiudades; i++){
-            infoCiudades[i] = new InfoCiudad(i,0,0);
-        }
+        for (int i = 0; i < cantCiudades; i++){ 
+            infoCiudades[i] = new InfoCiudad(i,0,0); //O(1)
+        } // la cantidad de iteraciones es c por lo que la complejidad del for es O(1) + c * O(1) = O(c)
     }
 
     public int ciudadConMayorSuperavit(){
-        return mayorSuperavit.maximo().id;
+        int id = -1; //si no hay informacion sobre ciudades (no hay una ciudad con mayor superavit) devuelve -1 pues un int no puede ser null
+        if ( mayorSuperavit.maximo() != null){
+            id =  mayorSuperavit.maximo().id;
+        }
+        return id;
     }
 
     public ArrayList<Integer> ciudadesConMayorGanancia(){
@@ -115,7 +127,7 @@ public class Estadistica {
         }
         else{
             int indiceInicial = indicesMayorSuperavit[ciudad];
-            int indiceFinal = mayorSuperavit.revisar(indiceInicial);
+            int indiceFinal = mayorSuperavit.verificarPosicion(indiceInicial);
             indicesMayorSuperavit[ciudad] = indiceFinal;
             if (indiceFinal <= indiceInicial){ //el elemento subió pues su superavit incrementó por encima del del padre
                 int i = indiceInicial; 

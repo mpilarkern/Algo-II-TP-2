@@ -105,14 +105,14 @@ public class HeapTestTupla {
 
         // Cambio el valor de una tupla
         t2.cambiarValor1(4);
-        assertEquals(1, heap.revisar(3), "t2 sube en el heap");
+        assertEquals(1, heap.verificarPosicion(3), "t2 sube en el heap");
 
         
         // Cambio el valor de una tupla hasta superar el maximo
         t1.cambiarValor1(6);
 
         // Verificar que el máximo sea correcto después de la eliminación
-        heap.revisar(2);
+        heap.verificarPosicion(2);
         assertEquals(t1, heap.maximo(), "El máximo debería ser (6,10)");
     }
 }

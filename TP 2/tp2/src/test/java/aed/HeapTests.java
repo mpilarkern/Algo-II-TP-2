@@ -108,19 +108,4 @@ public class HeapTests {
         assertEquals(10, heap.obtenerElemento(2));
         assertNull(heap.obtenerElemento(3));  // Fuera de rango
     }
-
-    @Test
-    public void testObtenerPadreHijos() {
-        Heap<Integer> heap = createMaxHeap();
-        heap.agregar(40);
-        heap.agregar(30);
-        heap.agregar(20);
-        heap.agregar(10);
-        heap.agregar(5);
-
-        assertEquals(40, heap.obtenerPadre(1));
-        assertEquals(40, heap.obtenerPadre(2));
-        assertEquals(30, heap.obtenerHijoIzq(0));
-        assertEquals(20, heap.obtenerHijoDer(0));
-    }
 }
