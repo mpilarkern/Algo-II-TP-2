@@ -196,28 +196,30 @@ public class BestEffort {
 
             int t = trasladosTiempo.eliminar(0);
             
-
-            while (t >= 0){            
-                int k = trasladosTiempo.obtenerElemento(t).handle; 
-                Dupla duplaGanancia = trasladosGanancia.obtenerElemento(k);
-                duplaGanancia.CambiarHandle(t);
-                if (t-1<0) { //cuando llegaba a la raiz entraba en un bucle infinito, asi si me paso salgo del while
-                    break;
-                }
-                t = (t-1) / 2;  
-            } 
+            if (trasladosTiempo.tamaño() > 0){
+                while (t >= 0){            
+                    int k = trasladosTiempo.obtenerElemento(t).handle; 
+                    Dupla duplaGanancia = trasladosGanancia.obtenerElemento(k);
+                    duplaGanancia.CambiarHandle(t);
+                    if (t-1<0) { //cuando llegaba a la raiz entraba en un bucle infinito, asi si me paso salgo del while
+                        break;
+                    }
+                    t = (t-1) / 2;  
+                } 
+            }
 
             int g = trasladosGanancia.eliminar(handle);
 
-
-            while (g >= 0){            
-                int m = trasladosGanancia.obtenerElemento(g).handle; 
-                Dupla duplaTiempo = trasladosTiempo.obtenerElemento(m);
-                duplaTiempo.CambiarHandle(g);
-                if (g-1<0) { //cuando llegaba a la raiz entraba en un bucle infinito, asi si me paso salgo del while
-                    break;
+            if (trasladosGanancia.tamaño() > 0){
+                while (g >= 0){            
+                    int m = trasladosGanancia.obtenerElemento(g).handle; 
+                    Dupla duplaTiempo = trasladosTiempo.obtenerElemento(m);
+                    duplaTiempo.CambiarHandle(g);
+                    if (g-1<0) { //cuando llegaba a la raiz entraba en un bucle infinito, asi si me paso salgo del while
+                        break;
+                    }
+                    g = (g-1) / 2;  
                 }
-                g = (g-1) / 2;  
             }  
 
             despachados.agregarDespachado(maximo.traslado);
