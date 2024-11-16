@@ -13,33 +13,114 @@ public class HeapTests {
     private Heap<Integer> heap; 
     private Comparator<Integer> comparator; 
 
-    @BeforeEach 
-    void setUp() { 
-        comparator = Integer::compareTo; // Comparator for integers 
-        heap = new Heap<>(comparator); 
-    } 
-    @Test 
-    void testConjuntoAHeap() { 
-        ArrayList<Integer> elementos = new ArrayList<>(Arrays.asList(3, 1, 6, 5, 2, 4)); 
-        heap.conjuntoAHeap(elementos); 
-        
-        // Verificar el tamaño del heap 
-        assertEquals(6, heap.tamaño(), "El tamaño del heap debe ser 6"); 
-        
-        // Verificar la estructura del heap 
-        // En un max-heap, el primer elemento debe ser el mayor 
-        assertEquals(6, heap.maximo(), "El elemento máximo debe ser 6"); 
-        
-        // Verificar los elementos ordenados según las propiedades del heap 
-        assertEquals(6, heap.sacarMaximo(), "El máximo extraído debe ser 6"); 
-        assertEquals(5, heap.sacarMaximo(), "El máximo extraído debe ser 5"); 
-        assertEquals(4, heap.sacarMaximo(), "El máximo extraído debe ser 4"); 
-        assertEquals(3, heap.sacarMaximo(), "El máximo extraído debe ser 3"); 
-        assertEquals(2, heap.sacarMaximo(), "El máximo extraído debe ser 2"); 
-        assertEquals(1, heap.sacarMaximo(), "El máximo extraído debe ser 1"); 
-        
-        // Verificar que el heap está vacío después de extraer todos los elementos
-        assertEquals(0, heap.tamaño(), "El tamaño del heap debe ser 0 después de extraer todos los elementos");
+
+    // Helper method to create a Heap of Integers with a Max-Heap Comparator
+    private Heap<Integer> createMaxHeap() {
+        return new Heap<Integer>(Comparator.naturalOrder());
+    }
+
+    // Helper method to create a Heap of Integers with a Min-Heap Comparator
+    private Heap<Integer> createMinHeap() {
+        return new Heap<Integer>(Comparator.reverseOrder());
+    }
+
+    @Test
+    public void testAgregar() {
+        Heap<Integer> heap = createMaxHeap();
+        assertEquals(0, heap.tamaño());
+
+        heap.agregar(10);
+        heap.agregar(20);
+        heap.agregar(5);
+
+        assertEquals(3, heap.tamaño());
+        assertEquals(20, heap.maximo());
+    }
+
+    @Test
+    public void testMaximo() {
+        Heap<Integer> heap = createMaxHeap();
+        heap.agregar(10);
+        heap.agregar(30);
+        heap.agregar(20);
+
+        assertEquals(30, heap.maximo());
+
+        heap.sacarMaximo();
+        assertEquals(20, heap.maximo());
+    }
+
+    @Test
+    public void testSacarMaximo() {
+        Heap<Integer> heap = createMaxHeap();
+        heap.agregar(15);
+        heap.agregar(10);
+        heap.agregar(20);
+        heap.agregar(25);
+
+        assertEquals(25, heap.sacarMaximo());
+        assertEquals(20, heap.sacarMaximo());
+        assertEquals(15, heap.sacarMaximo());
+        assertEquals(10, heap.sacarMaximo());
+        assertNull(heap.sacarMaximo());
+    }
+
+    @Test
+    public void testConjuntoAHeap() {
+        Heap<Integer> heap = createMaxHeap();
+        ArrayList<Integer> lista = new ArrayList<>();
+        lista.add(5);
+        lista.add(15);
+        lista.add(10);
+        lista.add(20);
+
+        heap.conjuntoAHeap(lista);
+        assertEquals(4, heap.tamaño());
+        assertEquals(20, heap.maximo());
+    }
+
+    @Test
+    public void testEliminar() {
+        Heap<Integer> heap = createMaxHeap();
+        heap.agregar(10);
+        heap.agregar(20);
+        heap.agregar(30);
+        heap.agregar(40);
+        heap.agregar(50);
+
+        int indiceEliminado = heap.eliminar(2);
+        assertEquals(4, heap.tamaño());
+        assertEquals(50, heap.maximo());
+        assertEquals(2, indiceEliminado);  // Indice final donde quedó el elemento movido
+
+        assertNull(heap.obtenerElemento(4));  // Debe ser null porque removimos un elemento
+    }
+
+    @Test
+    public void testObtenerElemento() {
+        Heap<Integer> heap = createMaxHeap();
+        heap.agregar(30);
+        heap.agregar(20);
+        heap.agregar(10);
+
+        assertEquals(30, heap.obtenerElemento(0));
+        assertEquals(20, heap.obtenerElemento(1));
+        assertEquals(10, heap.obtenerElemento(2));
+        assertNull(heap.obtenerElemento(3));  // Fuera de rango
+    }
+
+    @Test
+    public void testObtenerPadreHijos() {
+        Heap<Integer> heap = createMaxHeap();
+        heap.agregar(40);
+        heap.agregar(30);
+        heap.agregar(20);
+        heap.agregar(10);
+        heap.agregar(5);
+
+        assertEquals(40, heap.obtenerPadre(1));
+        assertEquals(40, heap.obtenerPadre(2));
+        assertEquals(30, heap.obtenerHijoIzq(0));
+        assertEquals(20, heap.obtenerHijoDer(0));
     }
 }
-
