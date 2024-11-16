@@ -26,8 +26,6 @@ public class InfoCiudad {
 
 
 
-
-    //ver si los comparators van acá o en otro lado
     public class GananciasComparator implements Comparator <InfoCiudad>{
         @Override
         public int compare(InfoCiudad c1, InfoCiudad c2){
