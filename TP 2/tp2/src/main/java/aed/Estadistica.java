@@ -9,7 +9,7 @@ import java.util.ArrayList;
 //Las operaciones elementales, las operaciones sobre arrayList (constructor, add, set, get, clear, size) y
 //los comparadores que creamos son O(1) así que, para facilitar la lectura, no aclararemos esto en cada aparición.
 
-// llamamos c a la cantidad de ciudades
+// llamamos C al conjunto de ciudades y n a la cantidad de elementos del heap mayorSupearvit
 
 public class Estadistica {
     private InfoCiudad[] infoCiudades;
@@ -37,11 +37,11 @@ public class Estadistica {
 
 
     public Estadistica(int cantCiudades){
-        infoCiudades = new InfoCiudad[cantCiudades]; //O(c)
+        infoCiudades = new InfoCiudad[cantCiudades]; //O(|C|)
         cantDespachados = 0;
         superavitComparator = new SuperavitComparator(); //O(1)
         mayorSuperavit = new Heap<>(superavitComparator); //O(1)
-        indicesMayorSuperavit = new Integer[cantCiudades]; //O(c)
+        indicesMayorSuperavit = new Integer[cantCiudades]; //O(|C|)
         ciudadesConMayorGanancia = new ArrayList<Integer>(); 
         gananciaMaxima = 0;
         ciudadesConMayorPerdida = new ArrayList<Integer>();
@@ -49,8 +49,8 @@ public class Estadistica {
         gananciaTotal = 0;
         for (int i = 0; i < cantCiudades; i++){ 
             infoCiudades[i] = new InfoCiudad(i,0,0); //O(1)
-        } // la cantidad de iteraciones es c por lo que la complejidad del for es O(1) + c * O(1) = O(c)
-    } // O(c)
+        } // la cantidad de iteraciones es c por lo que la complejidad del for es O(1) + |C| * O(1) = O(|C|)
+    } // O(|C|)
 
     public int ciudadConMayorSuperavit(){
         int id = -1; //si no hay informacion sobre ciudades (no hay una ciudad con mayor superavit) devuelve -1 pues un int no puede ser null
@@ -104,7 +104,7 @@ public class Estadistica {
             ciudadesConMayorPerdida.add(ciudad);
         } //O(1)
         else if (infoCiudad.perdida > perdidaMaxima){
-            ciudadesConMayorPerdida.clear();          //se puede usar clear()??
+            ciudadesConMayorPerdida.clear();       
             ciudadesConMayorPerdida.add(ciudad);
             perdidaMaxima = infoCiudad.perdida;
         } //O(1)
@@ -113,7 +113,7 @@ public class Estadistica {
     private void actualizarSuperavitHeap(int ciudad){
         if (indicesMayorSuperavit[ciudad] == null){ // si esta ciudad aún no fue origen ni destino de ningun traslado despachado, significa que no está en el heap aún y hay que agregarla
             InfoCiudad infoCiudad = infoCiudades[ciudad]; //O(1)
-            int indice = mayorSuperavit.agregar(infoCiudad); // O(log n), donde n es la cant. de elementos del heap mayorSuperavit
+            int indice = mayorSuperavit.agregar(infoCiudad); // O(log n)
             indicesMayorSuperavit[ciudad] = indice;
             int i = mayorSuperavit.tamaño()-1; 
             while (i > indice){ // empiezo a iterar desde el ultimo elemento del heap        
