@@ -9,24 +9,20 @@ import java.util.Comparator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+//Estos son tests básicos para ver que cada método de nuestra clase Heap funcione bien
+
 public class HeapTests {
     private Heap<Integer> heap; 
     private Comparator<Integer> comparator; 
 
 
-    // Helper method to create a Heap of Integers with a Max-Heap Comparator
-    private Heap<Integer> createMaxHeap() {
-        return new Heap<Integer>(Comparator.naturalOrder());
-    }
-
-    // Helper method to create a Heap of Integers with a Min-Heap Comparator
-    private Heap<Integer> createMinHeap() {
-        return new Heap<Integer>(Comparator.reverseOrder());
+    private Heap<Integer> crearMaxHeap() {
+        return new Heap<Integer>(Comparator.naturalOrder()); //usamos este comparador para naturales
     }
 
     @Test
     public void testAgregar() {
-        Heap<Integer> heap = createMaxHeap();
+        Heap<Integer> heap = crearMaxHeap();
         assertEquals(0, heap.tamaño());
 
         heap.agregar(10);
@@ -39,7 +35,7 @@ public class HeapTests {
 
     @Test
     public void testMaximo() {
-        Heap<Integer> heap = createMaxHeap();
+        Heap<Integer> heap = crearMaxHeap();
         heap.agregar(10);
         heap.agregar(30);
         heap.agregar(20);
@@ -52,7 +48,7 @@ public class HeapTests {
 
     @Test
     public void testSacarMaximo() {
-        Heap<Integer> heap = createMaxHeap();
+        Heap<Integer> heap = crearMaxHeap();
         heap.agregar(15);
         heap.agregar(10);
         heap.agregar(20);
@@ -67,7 +63,7 @@ public class HeapTests {
 
     @Test
     public void testConjuntoAHeap() {
-        Heap<Integer> heap = createMaxHeap();
+        Heap<Integer> heap = crearMaxHeap();
         ArrayList<Integer> lista = new ArrayList<>();
         lista.add(5);
         lista.add(15);
@@ -81,7 +77,7 @@ public class HeapTests {
 
     @Test
     public void testEliminar() {
-        Heap<Integer> heap = createMaxHeap();
+        Heap<Integer> heap = crearMaxHeap();
         heap.agregar(10);
         heap.agregar(20);
         heap.agregar(30);
@@ -98,7 +94,7 @@ public class HeapTests {
 
     @Test
     public void testObtenerElemento() {
-        Heap<Integer> heap = createMaxHeap();
+        Heap<Integer> heap = crearMaxHeap();
         heap.agregar(30);
         heap.agregar(20);
         heap.agregar(10);

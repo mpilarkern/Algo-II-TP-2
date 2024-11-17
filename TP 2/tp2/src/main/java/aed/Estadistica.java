@@ -120,7 +120,8 @@ public class Estadistica {
                 int id_ciudad = mayorSuperavit.obtenerElemento(i).id; //ciudad_id es la posición en la lista indicesMayorSuperavit, O(1)
                 indicesMayorSuperavit[id_ciudad] = i; // corrijo la referencia a la posicion del heap en la lista
                 i = (i-1) / 2;  // itero subiendo al padre
-        } // el while tiene complejidad O(log |C|) porque en el peor caso recorro la altura del heap que es log |C|
+            } // el while tiene complejidad O(log |C|) porque en el peor caso recorro la altura del heap que es log |C|
+        }
         else{
             int indiceInicial = indicesMayorSuperavit[ciudad]; // O(1)
             int indiceFinal = mayorSuperavit.verificarPosicion(indiceInicial); // O(log |C|)

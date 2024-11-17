@@ -5,16 +5,33 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+// Creamos estos test para testear Heap con un tipo más complejo. 
+// Además, podemos probar la funcion verificarPosicion(indice)
+
 public class HeapTestTupla {
 
-    // Comparator para comparar Tuplas por valor1
-    private Comparator<Tupla> compararPorValor1 = (Tupla t1, Tupla t2) -> Integer.compare(t1.getValor1(), t2.getValor1());
+    private class compararPorValor1 implements Comparator <Tupla>{
+        @Override
+        public int compare(Tupla t1, Tupla t2){
+            return Integer.compare(t1.getValor1(), t2.getValor1());
+        }
+    }
 
-    // Comparator para comparar Tuplas por valor2
-    private Comparator<Tupla> compararPorValor2 = (Tupla t1, Tupla t2) -> Integer.compare(t1.getValor2(), t2.getValor2());
+    private compararPorValor1 compararPorValor1;
+
+    
+    private class compararPorValor2 implements Comparator <Tupla>{
+        @Override
+        public int compare(Tupla t1, Tupla t2){
+            return Integer.compare(t1.getValor2(), t2.getValor2());
+        }
+    }
+
+    private compararPorValor2 compararPorValor2;
 
     @Test
     public void testHeapConTuplasPorValor1() {
+        compararPorValor1 = new compararPorValor1();
         Heap<Tupla> heap = new Heap<>(compararPorValor1);
 
         // Agregar elementos
@@ -41,6 +58,7 @@ public class HeapTestTupla {
 
     @Test
     public void testHeapConTuplasPorValor2() {
+        compararPorValor2 = new compararPorValor2();
         Heap<Tupla> heap = new Heap<>(compararPorValor2);
 
         // Agregar elementos
@@ -67,6 +85,7 @@ public class HeapTestTupla {
 
     @Test
     public void testEliminacionConTuplas() {
+        compararPorValor1 = new compararPorValor1();
         Heap<Tupla> heap = new Heap<>(compararPorValor1);
 
         // Agregar elementos
@@ -90,6 +109,7 @@ public class HeapTestTupla {
 
     @Test
     public void testRevisarConTuplas() {
+        compararPorValor1 = new compararPorValor1();
         Heap<Tupla> heap = new Heap<>(compararPorValor1);
 
         // Agregar elementos

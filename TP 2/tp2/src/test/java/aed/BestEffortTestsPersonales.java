@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+// Armamos estos tests para verificar que cada método de BestEffort funciona correctamente
+// Incluimos tests que hacen varias operaciones una tras otra y tests de casos particulares como un sistema vacío o cuando disminuye el superavit de la ciudad de superavit máximo
+
 public class BestEffortTestsPersonales {
 
     int cantCiudades;

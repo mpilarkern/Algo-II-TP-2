@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
 
+// La idea de este test es ver que nuestra clase Heap funcione bien cuando agramos muchos elementos y hacemos muchas operaciones
+
 public class HeapStressTest {
 
     @Test
     public void stressTestHeap() {
-        // Usar un Comparator que maneje valores nulos
+        // Usamos un Comparator que maneje valores nulos
         Comparator<Integer> safeComparator = (a, b) -> {
             if (a == null && b == null) return 0;
             if (a == null) return -1;
@@ -21,25 +23,25 @@ public class HeapStressTest {
         Heap<Integer> heap = new Heap<>(safeComparator);
         
         Random rand = new Random();
-        int maxSize = 100000;
+        int tam = 100000;
         
-        // Agregar muchos elementos
-        for (int i = 0; i < maxSize; i++) {
+        // Agregamos muchos elementos aleatorios al Heap usando Random
+        for (int i = 0; i < tam; i++) {
             heap.agregar(rand.nextInt(100000));
         }
         
-        // Realizar varias operaciones
+        // Realizamos varias operaciones
         for (int i = 0; i < 50000; i++) {
             heap.sacarMaximo();
             heap.agregar(rand.nextInt(100000));
         }
         
-        // Comprobar que la estructura del heap sigue siendo correcta
-        int lastMax = heap.sacarMaximo();
+        // Comprobamos que la estructura del heap sigue siendo correcta
+        int maxAnterior = heap.sacarMaximo();
         while (heap.tamaño() > 0) {
-            int nextMax = heap.sacarMaximo();
-            assertTrue(lastMax >= nextMax, "El Heap está desordenado");
-            lastMax = nextMax;
+            int maxSiguiente = heap.sacarMaximo();
+            assertTrue(maxAnterior >= maxSiguiente, "El Heap está desordenado");
+            maxAnterior = maxSiguiente;
         }
     }
     
