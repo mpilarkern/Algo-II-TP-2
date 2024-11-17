@@ -49,7 +49,7 @@ public class Estadistica {
         gananciaTotal = 0;
         for (int i = 0; i < cantCiudades; i++){ 
             infoCiudades[i] = new InfoCiudad(i,0,0); //O(1)
-        } // la cantidad de iteraciones es c por lo que la complejidad del for es O(1) + |C| * O(1) = O(|C|)
+        } // la cantidad de iteraciones es |C| por lo que la complejidad del for es O(1) + |C| * O(1) = O(|C|)
     } // O(|C|)
 
     public int ciudadConMayorSuperavit(){
@@ -73,8 +73,8 @@ public class Estadistica {
         int ciudadDestino = traslado.destino;
         int gananciaNeta = traslado.gananciaNeta;
 
-        infoCiudades[ciudadOrigen].agregarGanancia(gananciaNeta);
-        infoCiudades[ciudadDestino].agregarPerdida(gananciaNeta);
+        infoCiudades[ciudadOrigen].agregarGanancia(gananciaNeta); //O(1)
+        infoCiudades[ciudadDestino].agregarPerdida(gananciaNeta); //O(1)
 
         actualizarCiudadesConMayorGanancia(ciudadOrigen); //O(1)
         actualizarCiudadesConMayorPerdida(ciudadDestino); //O(1)
@@ -114,7 +114,7 @@ public class Estadistica {
         if (indicesMayorSuperavit[ciudad] == null){ // si esta ciudad aún no fue origen ni destino de ningun traslado despachado, significa que no está en el heap aún y hay que agregarla
             InfoCiudad infoCiudad = infoCiudades[ciudad]; //O(1)
             int indice = mayorSuperavit.agregar(infoCiudad); // O(log |C|)
-            indicesMayorSuperavit[ciudad] = indice;
+            indicesMayorSuperavit[ciudad] = indice; //O(1)
             int i = mayorSuperavit.tamaño()-1; 
             while (i > indice){ // empiezo a iterar desde el ultimo elemento del heap        
                 int id_ciudad = mayorSuperavit.obtenerElemento(i).id; //ciudad_id es la posición en la lista indicesMayorSuperavit, O(1)

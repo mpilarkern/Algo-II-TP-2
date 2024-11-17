@@ -60,15 +60,15 @@ public class BestEffort {
             
             Dupla duplaGanancias = new Dupla(t,i); 
             listaDuplasGanancias.add(duplaGanancias);
-        } //La complejidad del for es O(|T|) porque itera |T| veces
+        } //La complejidad del for es O(|T|) porque itera |T| veces y las operaciones en el interior del for tienen complejidad total O(1)
 
         trasladosTiempo = new Heap<>(comparadorTiempo).conjuntoAHeap(listaDuplasTiempo); //Creo los heaps a partir de las listas que armé previamente, cada uno con su comparator correspondiente
         trasladosGanancia = new Heap<>(comparadorGanancia).conjuntoAHeap(listaDuplasGanancias); //La complejidad de conjuntoAHeap es O(|T|)
 
         for (int j = 0; j < traslados.length; j++){ //En este for asigno correctamente el handle a los traslados en mi heap de Ganancias
             Dupla duplaTiempo = trasladosTiempo.obtenerElemento(j); //Obtener elemento tiene complejidad O(1)
-            int posicionEnLista = duplaTiempo.handle; //El handle que tenia guardado en el heap de Tiempo es la posicion que tiene el elemento en la lista pasada por parámetro
-            Dupla duplaGanancias = listaDuplasGanancias.get(posicionEnLista); // Tomo la dupla que contiene el traslado al que quiero modificar el handle a partir de la copia que hice de la lista pasada por parámetro
+            int posicionEnLista = duplaTiempo.handle; //El handle que tenia guardado en el heap de Tiempo es la posicion que tiene el elemento en la lista de duplas
+            Dupla duplaGanancias = listaDuplasGanancias.get(posicionEnLista); // Tomo la dupla que contiene el traslado al que quiero modificar el handle de listaDuplasGanacia
             duplaGanancias.CambiarHandle(j); // j es la posicion de mi traslado en el heap de Tiempo, es decir, el handle de mi traslado en el heap de Ganancia, cambiarHandle tiene complejidad O(1)
         } 
 
@@ -145,7 +145,7 @@ public class BestEffort {
 
             int g = trasladosGanancia.eliminar(0); // O(log |T|)
             if (trasladosGanancia.tamaño() > 0){
-                while (g >= 0){         // corrijo los handle    
+                while (g >= 0){                 // corrijo los handle comenzando por la nueva posición del que antes era el último traslado y subiendo por esa rama hasta la raiz para modificar todos los handles que pudieron haber cambiado
                     int k = trasladosGanancia.obtenerElemento(g).handle; 
                     Dupla duplaTiempo = trasladosTiempo.obtenerElemento(k);
                     duplaTiempo.CambiarHandle(g);
