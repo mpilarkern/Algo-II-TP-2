@@ -107,6 +107,27 @@ public class BestEffortTestsPersonales {
     }
 
     @Test
+    void despachar_mas_de_lo_que_hay(){ // este test es como el anterior pero solicita despachos luego de despachar todo lo que hay para bver que maneje bien esta situacion
+        BestEffort sis = new BestEffort(this.cantCiudades, this.listaTraslados);
+
+        Traslado[] nuevos = new Traslado[] {
+            new Traslado(8, 0, 4, 13000, 1),
+            new Traslado(9, 2, 3, 15000, 3),
+            new Traslado(10, 4, 1, 13000, 2),
+            new Traslado(11, 4, 2, 1800, 4),
+            new Traslado(12, 4, 0, 900, 8), 
+            new Traslado(13, 1, 3, 400, 9),
+
+        };
+        sis.registrarTraslados(nuevos);
+
+        sis.despacharMasRedituables(15);
+
+        assertSetEquals(new ArrayList<>(Arrays.asList(0,4)), sis.ciudadesConMayorGanancia());
+        assertSetEquals(new ArrayList<>(Arrays.asList(1,3)), sis.ciudadesConMayorPerdida());
+    }
+
+    @Test
     void promedio_y_superavit(){ // cambia el superavit
         BestEffort sis = new BestEffort(this.cantCiudades, this.listaTraslados);
 
@@ -138,4 +159,5 @@ public class BestEffortTestsPersonales {
         assertEquals(-1, sis.ciudadConMayorSuperavit()); //da -1 porque los int no tienen null
 
     }
+    
 }
